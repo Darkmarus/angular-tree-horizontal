@@ -1,0 +1,10 @@
+<span class="label">{{ node?.label }}</span>
+<div class="branch" *ngIf="node.nodes">
+  <div
+    class="entry"
+    [class.sole]="size === 1"
+    *ngFor="let n of node.nodes; let size = count"
+  >
+    <app-node [node]="n"></app-node>
+  </div>
+</div>
