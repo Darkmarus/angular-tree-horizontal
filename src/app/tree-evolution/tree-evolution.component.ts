@@ -68,16 +68,11 @@ export class TreeEvolutionComponent implements OnInit {
 
   treeLink(path: string) {
     const links = path.split('/').map((s) => ({ label: s }));
-    return links.reduce((acc, valorActual, indice) => {
-      if (indice == 0) {
-        acc[indice] = { ...valorActual, url: valorActual.label };
-      } else {
-        acc[indice] = {
-          ...valorActual,
-          url: acc[indice - 1].url + '/' + valorActual.label,
-        };
-      }
-      return acc;
-    }, []);
+    links.forEach((item, index, vector) => {
+      item['url'] = !index
+        ? item.label
+        : `${vector[index - 1]['url']}/${item.label}`;
+    });
+    return links;
   }
 }
