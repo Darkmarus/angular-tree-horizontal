@@ -52,5 +52,32 @@ export class TreeEvolutionComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  loadPath(node, path) {
+    node['path'] = path;
+    if (node.nodes) {
+      node.nodes.forEach((n) => this.loadPath(n, `${path}/${n.label}`));
+    }
+  }
+
+  ngOnInit() {
+    const aux = [this.node];
+    aux.forEach((item) => this.loadPath(item, item.label));
+    console.log(aux);
+    console.log(this.treeLink('root/1/1.3/1.3.1'));
+  }
+
+  treeLink(path: string) {
+    const links = path.split('/').map((s) => ({ label: s }));
+    return links.reduce((acc, valorActual, indice) => {
+      if (indice == 0) {
+        acc[indice] = { ...valorActual, url: valorActual.label };
+      } else {
+        acc[indice] = {
+          ...valorActual,
+          url: acc[indice - 1].url + '/' + valorActual.label,
+        };
+      }
+      return acc;
+    }, []);
+  }
 }
